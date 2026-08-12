@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Executive Advantage</title>
+<style>
+  :root {
+    --navy: #29245c;
+    --orange: #e9761b;
+    --navy-light: #3a3478;
+    --navy-pale: #f0effa;
+    --orange-pale: #fef4e8;
+    --border: #d9d6ee;
+    --muted: #6b6888;
+    --ink: #1a1833;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--white);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 72px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 14px; text-decoration: none;
+  }
+  .nav-brand span {
+    color: var(--white); font-size: 15px; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase; line-height: 1.2;
+  }
+  .nav-brand span em {
+    display: block; color: var(--orange); font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  }
+  .nav-links { display: flex; align-items: center; gap: 6px; }
+  .nav-links a {
+    color: rgba(255,255,255,.8); text-decoration: none;
+    font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 6px;
+    transition: all .15s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); background: rgba(255,255,255,.1); }
+  .nav-links .nav-cta {
+    background: var(--orange); color: var(--white) !important;
+    padding: 8px 18px; border-radius: 6px; margin-left: 8px; font-weight: 700;
+  }
+  .nav-links .nav-cta:hover { background: #d4660f; }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+  .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: .2s; }
+  .mobile-menu {
+    display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 99;
+    background: var(--navy); padding: 16px 24px; flex-direction: column; gap: 4px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: rgba(255,255,255,.85); text-decoration: none;
+    font-size: 15px; font-weight: 500; padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+
+  /* ── SECTIONS ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    padding: 96px 40px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 52px); font-weight: 800;
+    color: var(--white); line-height: 1.15; max-width: 760px; margin: 0 auto 20px;
+  }
+  .hero h1 span { color: var(--orange); }
+  .hero p {
+    font-size: clamp(15px, 2vw, 18px); color: rgba(255,255,255,.75);
+    line-height: 1.7; max-width: 600px; margin: 0 auto 36px;
+  }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 13px 28px; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; cursor: pointer; border: none; font-family: inherit; transition: opacity .15s; }
+  .btn:hover { opacity: .88; }
+  .btn-primary { background: var(--orange); color: var(--white); }
+  .btn-outline { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,.4); }
+  .btn-navy { background: var(--navy); color: var(--white); }
+
+  /* ── SECTIONS SHARED ── */
+  section { padding: 72px 40px; }
+  .section-inner { max-width: 1080px; margin: 0 auto; }
+  .section-label {
+    font-size: 12px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 10px;
+  }
+  .section-heading {
+    font-size: clamp(22px, 3.5vw, 36px); font-weight: 800;
+    color: var(--navy); line-height: 1.2; margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 16px; color: var(--muted); line-height: 1.7;
+    max-width: 620px; margin-bottom: 48px;
+  }
+  .divider { height: 4px; width: 48px; background: var(--orange); border-radius: 2px; margin-bottom: 20px; }
+
+  /* ── CARDS ── */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .card {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 28px; transition: box-shadow .2s;
+  }
+  .card:hover { box-shadow: 0 6px 24px rgba(41,36,92,.1); }
+  .card-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--orange-pale); display: flex; align-items: center;
+    justify-content: center; font-size: 20px; margin-bottom: 16px;
+  }
+  .card h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  /* ── STAT BAR ── */
+  .stats { background: var(--navy); padding: 48px 40px; }
+  .stats-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; text-align: center; }
+  .stat-num { font-size: 42px; font-weight: 800; color: var(--orange); line-height: 1; margin-bottom: 8px; }
+  .stat-label { font-size: 13px; color: rgba(255,255,255,.7); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; }
+
+  /* ── CASE STUDY CARDS ── */
+  .case-card {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 12px; overflow: hidden; transition: box-shadow .2s;
+  }
+  .case-card:hover { box-shadow: 0 6px 24px rgba(41,36,92,.1); }
+  .case-card-header { background: var(--navy-pale); padding: 24px; border-bottom: 1.5px solid var(--border); }
+  .case-card-tag {
+    display: inline-block; background: var(--orange); color: var(--white);
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+    letter-spacing: .05em; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .case-card-header h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .case-card-header p { font-size: 13px; color: var(--muted); }
+  .case-card-body { padding: 24px; }
+  .case-card-body p { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
+  .case-result {
+    background: var(--orange-pale); border-radius: 8px; padding: 12px 16px;
+    font-size: 13px; font-weight: 600; color: var(--navy);
+  }
+  .case-result span { color: var(--orange); }
+
+  /* ── SERVICES ── */
+  .service-row {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 32px;
+    padding: 32px 0; border-bottom: 1.5px solid var(--border); align-items: start;
+  }
+  .service-row:last-child { border-bottom: none; }
+  .service-num {
+    font-size: 48px; font-weight: 800; color: var(--border); line-height: 1;
+  }
+  .service-content h3 { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .service-content p { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+  .service-tag {
+    display: inline-block; background: var(--navy-pale); color: var(--navy);
+    font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-right: 6px; margin-bottom: 6px;
+  }
+
+  /* ── FAQ ── */
+  .faq-item {
+    border-bottom: 1.5px solid var(--border); padding: 20px 0; cursor: pointer;
+  }
+  .faq-item:first-child { border-top: 1.5px solid var(--border); }
+  .faq-q {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    font-size: 15px; font-weight: 600; color: var(--navy);
+  }
+  .faq-q .faq-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--navy-pale); color: var(--navy); font-size: 16px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: .2s;
+  }
+  .faq-item.open .faq-icon { background: var(--orange); color: var(--white); transform: rotate(45deg); }
+  .faq-a {
+    display: none; font-size: 14px; color: var(--muted);
+    line-height: 1.7; padding-top: 14px;
+  }
+  .faq-item.open .faq-a { display: block; }
+
+  /* ── CTA BAND ── */
+  .cta-band { background: var(--orange); padding: 72px 40px; text-align: center; }
+  .cta-band h2 { font-size: clamp(22px, 3.5vw, 36px); font-weight: 800; color: var(--white); margin-bottom: 14px; }
+  .cta-band p { font-size: 16px; color: rgba(255,255,255,.85); margin-bottom: 32px; max-width: 520px; margin-left: auto; margin-right: auto; }
+  .btn-white { background: var(--white); color: var(--orange); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--navy); padding: 48px 40px 32px; }
+  .footer-inner { max-width: 1080px; margin: 0 auto; }
+  .footer-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
+  .footer-brand p { font-size: 13px; color: rgba(255,255,255,.5); margin-top: 10px; max-width: 280px; line-height: 1.6; }
+  .footer-links h4 { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+  .footer-links a { display: block; font-size: 14px; color: rgba(255,255,255,.65); text-decoration: none; margin-bottom: 8px; cursor: pointer; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer-bottom p { font-size: 12px; color: rgba(255,255,255,.4); }
+
+  /* ── BADGE ── */
+  .badge { display: inline-block; background: var(--navy-pale); color: var(--navy); font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; }
+
+  /* ── BENCHMARK PAGE ── */
+  .benchmark-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 56px; }
+  .step-card { text-align: center; padding: 28px 20px; }
+  .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--orange); color: var(--white); font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  .step-card h4 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .step-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .tool-preview {
+    background: var(--navy-pale); border: 1.5px solid var(--border);
+    border-radius: 16px; padding: 48px 40px; text-align: center;
+    max-width: 620px; margin: 0 auto;
+  }
+  .tool-preview h3 { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 12px; }
+  .tool-preview p { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+  .score-badge { display: inline-flex; align-items: baseline; gap: 4px; margin-bottom: 28px; }
+  .score-badge span:first-child { font-size: 56px; font-weight: 800; color: var(--navy); }
+  .score-badge span:last-child { font-size: 20px; color: var(--muted); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    section { padding: 52px 20px; }
+    .hero { padding: 64px 20px; }
+    .stats { padding: 40px 20px; }
+    .cta-band { padding: 56px 20px; }
+    footer { padding: 40px 20px 28px; }
+    .service-row { grid-template-columns: 1fr; gap: 8px; }
+    .service-num { font-size: 32px; }
+    .footer-top { flex-direction: column; gap: 28px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .tool-preview { padding: 32px 24px; }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .btn { width: 100%; max-width: 320px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#" onclick="showPage('benchmark')">
+    <div>
+      <span>The Executive<br>Advantage<em>by Adrian Evans</em></span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#" onclick="showPage('benchmark')" id="nav-benchmark">Benchmark Your Career</a>
+    <a href="#" onclick="showPage('cases')" id="nav-cases">Case Studies</a>
+    <a href="#" onclick="showPage('services')" id="nav-services">Growth Advisory</a>
+    <a href="#" onclick="showPage('faq')" id="nav-faq">FAQ</a>
+    <a href="diagnostic.html" class="nav-cta">Take the Diagnostic &rarr;</a>
+  </div>
+  <div class="nav-hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#" onclick="showPage('benchmark');toggleMenu()">Benchmark Your Career</a>
+  <a href="#" onclick="showPage('cases');toggleMenu()">Case Studies</a>
+  <a href="#" onclick="showPage('services');toggleMenu()">Growth Advisory</a>
+  <a href="#" onclick="showPage('faq');toggleMenu()">FAQ</a>
+  <a href="diagnostic.html" style="color:var(--orange);font-weight:700;">Take the Diagnostic &rarr;</a>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 1 — BENCHMARK YOUR CAREER
+══════════════════════════════════════ -->
+<div class="page active" id="page-benchmark">
+
+  <div class="hero">
+    <p class="hero-eyebrow">The Executive Advantage &mdash; Career Diagnostic</p>
+    <h1>Benchmark Your Career.<br><span>Know Exactly Where to Focus.</span></h1>
+    <p>Most executives don't struggle because of a lack of talent — they struggle because they lack a process. Benchmark your career readiness against Adrian's proven 14-step framework and discover exactly what's holding you back.</p>
+    <div class="hero-btns">
+      <a href="diagnostic.html" class="btn btn-primary">Take the Free Diagnostic &rarr;</a>
+      <a href="#" class="btn btn-outline" onclick="showPage('services')">Explore Advisory Services</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stats-inner">
+      <div><div class="stat-num">200</div><div class="stat-label">Point scoring framework</div></div>
+      <div><div class="stat-num">14</div><div class="stat-label">Steps assessed</div></div>
+      <div><div class="stat-num">5</div><div class="stat-label">Career stages covered</div></div>
+      <div><div class="stat-num">4 min</div><div class="stat-label">To complete</div></div>
+    </div>
+  </div>
+
+  <section style="background:var(--white);">
+    <div class="section-inner">
+      <div class="divider"></div>
+      <p class="section-label">How it works</p>
+      <h2 class="section-heading">Three steps to career clarity</h2>
+      <p class="section-sub">The Executive Advantage Score gives you an honest, weighted snapshot of where you stand — and where to focus first.</p>
+      <div class="benchmark-steps">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h4>Rate yourself honestly</h4>
+          <p>Score yourself 0–10 across 14 statements covering the five stages of a successful executive job search.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h4>See your weighted score</h4>
+          <p>Your responses are weighted by importance and compiled into a score out of 200 — giving you an accurate picture of your market readiness.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h4>Receive your focus areas</h4>
+          <p>Your three lowest-scoring steps are highlighted immediately. Adrian reviews your result and follows up directly.</p>
+        </div>
+      </div>
+      <div class="tool-preview">
+        <div class="score-badge"><span>200</span><span>pts</span></div>
+        <h3>The Executive Advantage Score</h3>
+        <p>A free, anonymous 14-step career readiness diagnostic built on Adrian's decade of experience as a London headhunter. Takes 4 minutes. Gives you a lifetime of clarity.</p>
+        <a href="diagnostic.html" class="btn btn-primary">Start the Diagnostic &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--navy-pale);">
+    <div class="section-inner">
+      <div class="divider"></div>
+      <p class="section-label">The five stages</p>
+      <h2 class="section-heading">What the diagnostic covers</h2>
+      <div class="card-grid">
+        <div class="card"><div class="card-icon">🧭</div><h3>The Foundation</h3><p>Assess your career direction, mindset and commitment that form the basis of your career story.</p></div>
+        <div class="card"><div class="card-icon">📢</div><h3>Go to Market</h3><p>Evaluate how effectively you position yourself to employers, recruiters, and key industry contacts.</p></div>
+        <div class="card"><div class="card-icon">📞</div><h3>The Methodology</h3><p>Measure how often you connect with powerful decision makers who can influence your career.</p></div>
+        <div class="card"><div class="card-icon">🎯</div><h3>Platform to Shine</h3><p>Review your interview approach and ability to identify pressing challenges for future employers.</p></div>
+        <div class="card"><div class="card-icon">🏆</div><h3>Close and Win</h3><p>Assess your ability to build trust with the process and secure appropriate reward in your next role.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Ready to benchmark your career?</h2>
+    <p>Join hundreds of senior executives who have used this framework to secure their next role — often generating multiple offers.</p>
+    <a href="diagnostic.html" class="btn btn-white">Take the Free Diagnostic &rarr;</a>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 2 — CASE STUDIES
+══════════════════════════════════════ -->
+<div class="page" id="page-cases">
+
+  <div class="hero">
+    <p class="hero-eyebrow">Case Studies</p>
+    <h1>Real Executives.<br><span>Real Results.</span></h1>
+    <p>Senior leaders across payments, fintech and financial services have used the Executive Advantage framework to navigate career transitions — even in the most challenging markets.</p>
+  </div>
+
+  <section>
+    <div class="section-inner">
+      <div class="divider"></div>
+      <p class="section-label">Success stories</p>
+      <h2 class="section-heading">From stalled to multiple offers</h2>
+      <p class="section-sub">All case studies are anonymised to protect client confidentiality. Results are representative of the outcomes achieved through the advisory process.</p>
+      <div class="card-grid">
+
+        <div class="case-card">
+          <div class="case-card-header">
+            <div class="case-card-tag">Payments</div>
+            <h3>Chief Payments Officer</h3>
+            <p>UK-based, 20+ years experience, seeking a step-up role</p>
+          </div>
+          <div class="case-card-body">
+            <p>A senior payments executive had been searching independently for eight months without traction. His Executive Advantage Score revealed a strong Foundation but significant gaps in Go to Market positioning and outreach methodology.</p>
+            <p>After working through the framework with Adrian, he restructured his LinkedIn profile, built a targeted outreach strategy and developed a compelling employer problem-solving narrative.</p>
+            <div class="case-result">Outcome: <span>3 offers within 14 weeks</span> — accepted a CEO role at a leading European payments firm.</div>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-card-header">
+            <div class="case-card-tag">Fintech</div>
+            <h3>Chief Revenue Officer</h3>
+            <p>EMEA-based, scaling-stage fintech background</p>
+          </div>
+          <div class="case-card-body">
+            <p>A CRO from a high-growth fintech found herself between roles following an acquisition. Despite a strong track record, her diagnostic score exposed a low Methodology score — she had not built a systematic process for connecting with decision makers.</p>
+            <p>Adrian helped her develop a targeted outreach cadence and coached her through a differentiated interview approach that showcased her commercial impact.</p>
+            <div class="case-result">Outcome: <span>4 offers in 10 weeks</span> — including a role with significantly improved equity and package.</div>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-card-header">
+            <div class="case-card-tag">Financial Services</div>
+            <h3>Managing Director, Transaction Banking</h3>
+            <p>Global bank, seeking non-executive portfolio</p>
+          </div>
+          <div class="case-card-body">
+            <p>A long-tenured MD at a global bank wanted to transition into a portfolio of advisory and non-executive director roles — a move he had never made before. His diagnostic revealed strong Belief and Foundation scores but very low Platform to Shine and Close and Win scores.</p>
+            <p>Through the advisory programme, he learned how to position his institutional expertise as a commercial asset for boards and investors.</p>
+            <div class="case-result">Outcome: <span>2 NED appointments secured</span> within 6 months of starting the programme.</div>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-card-header">
+            <div class="case-card-tag">2008–09 Market</div>
+            <h3>VP Operations, Global Card Scheme</h3>
+            <p>Navigating the financial crisis job market</p>
+          </div>
+          <div class="case-card-body">
+            <p>One of the earliest applications of the framework — during one of the most difficult hiring markets in a generation. A VP of Operations at a global card scheme was made redundant at the height of the 2008 financial crisis.</p>
+            <p>By following the 14-step methodology precisely, he maintained consistent outreach activity even as the market contracted, eventually securing a role ahead of the recovery.</p>
+            <div class="case-result">Outcome: <span>Offer accepted within 4 months</span> — in a market where peers waited 12+ months.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>See where you stand today.</h2>
+    <p>Take the free Executive Advantage Score diagnostic and Adrian will follow up to walk through your results.</p>
+    <a href="diagnostic.html" class="btn btn-white">Take the Free Diagnostic &rarr;</a>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 3 — GROWTH ADVISORY SERVICES
+══════════════════════════════════════ -->
+<div class="page" id="page-services">
+
+  <div class="hero">
+    <p class="hero-eyebrow">Growth Advisory Services</p>
+    <h1>A Proven Process.<br><span>A Senior Adviser in Your Corner.</span></h1>
+    <p>Adrian Evans brings a decade of London headhunting and years of executive career advisory experience to each engagement. Every programme is built around the 14-step framework that has helped hundreds of senior leaders create career opportunities — rather than chase them.</p>
+  </div>
+
+  <section>
+    <div class="section-inner">
+      <div class="divider"></div>
+      <p class="section-label">What we offer</p>
+      <h2 class="section-heading">Advisory services for senior executives</h2>
+      <p class="section-sub">Tailored programmes for payments, fintech and financial services leaders at MD, C-suite and board level.</p>
+
+      <div class="service-row">
+        <div class="service-num">01</div>
+        <div class="service-content">
+          <h3>Executive Advantage Programme</h3>
+          <p>The flagship advisory engagement. A structured, end-to-end career transition programme built around the 14-step framework. Adrian works with you directly to close gaps in your Foundation, sharpen your Go to Market positioning, build an outreach methodology and prepare you to win at the Close and Win stage.</p>
+          <p>Designed for executives who are serious about their next move and want a disciplined process — not guesswork.</p>
+          <span class="service-tag">MD &amp; C-Suite</span>
+          <span class="service-tag">3–6 month engagement</span>
+          <span class="service-tag">Payments &amp; Fintech</span>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-num">02</div>
+        <div class="service-content">
+          <h3>Career Positioning &amp; Brand Review</h3>
+          <p>A focused, intensive review of how you are presenting yourself to the market. Adrian audits your CV, LinkedIn profile and verbal narrative — and rebuilds them around your commercial impact rather than your job history.</p>
+          <p>Ideal for executives re-entering the market after a period of absence, transitioning sector, or stepping up in seniority for the first time.</p>
+          <span class="service-tag">CV &amp; LinkedIn Audit</span>
+          <span class="service-tag">Brand Narrative</span>
+          <span class="service-tag">Interview Preparation</span>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-num">03</div>
+        <div class="service-content">
+          <h3>Hidden Market Outreach Strategy</h3>
+          <p>Most senior roles are never advertised. This programme helps you build the relationships, methodology and outreach cadence needed to access opportunities before they reach the open market.</p>
+          <p>Includes building a prioritised target list, crafting outreach messages that get responses, and developing a tracking system to maintain momentum across a sustained campaign.</p>
+          <span class="service-tag">Outreach Methodology</span>
+          <span class="service-tag">Hidden Job Market</span>
+          <span class="service-tag">Decision Maker Access</span>
+        </div>
+      </div>
+
+      <div class="service-row">
+        <div class="service-num">04</div>
+        <div class="service-content">
+          <h3>Offer Negotiation &amp; Close</h3>
+          <p>Executives consistently underestimate the value they bring to the table — and leave significant compensation on the table as a result. Adrian coaches you through the final stage of the process: understanding your worth, building leverage, and negotiating an appropriate package with confidence.</p>
+          <span class="service-tag">Salary Negotiation</span>
+          <span class="service-tag">Package Structuring</span>
+          <span class="service-tag">Offer Management</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section style="background:var(--navy-pale);">
+    <div class="section-inner">
+      <div class="divider"></div>
+      <p class="section-label">Why Adrian</p>
+      <h2 class="section-heading">Experience that comes from the other side of the table</h2>
+      <div class="card-grid">
+        <div class="card"><div class="card-icon">🔍</div><h3>Former London Headhunter</h3><p>Adrian spent a decade placing senior executives across payments and financial services — giving him an unparalleled view of what hiring decisions are really made on.</p></div>
+        <div class="card"><div class="card-icon">🌍</div><h3>Global Payments Network</h3><p>Deep relationships across the UK, Europe, US, Africa, LatAm, Singapore and Australia — the network that powers the Payments Leaders Show and PLA's advisory work.</p></div>
+        <div class="card"><div class="card-icon">📊</div><h3>Proven in Difficult Markets</h3><p>The framework was developed and tested during the 2008–09 financial crisis. It works when the market is against you — and even better when it isn't.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Start with the free diagnostic.</h2>
+    <p>Before any advisory conversation, take the Executive Advantage Score. It gives Adrian everything he needs to understand where to focus — and gives you a clear picture of where you stand.</p>
+    <a href="diagnostic.html" class="btn btn-white">Take the Free Diagnostic &rarr;</a>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 4 — FAQ
+══════════════════════════════════════ -->
+<div class="page" id="page-faq">
+
+  <div class="hero">
+    <p class="hero-eyebrow">Frequently Asked Questions</p>
+    <h1>Questions<br><span>Answered.</span></h1>
+    <p>Everything you need to know about the Executive Advantage Score diagnostic and Adrian's advisory services.</p>
+  </div>
+
+  <section>
+    <div class="section-inner" style="max-width:720px;">
+      <div class="divider"></div>
+      <p class="section-label">About the Diagnostic</p>
+      <h2 class="section-heading" style="margin-bottom:32px;">The Executive Advantage Score</h2>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What is the Executive Advantage Score?<div class="faq-icon">+</div></div>
+        <div class="faq-a">The Executive Advantage Score is a free, 14-step career readiness diagnostic built on Adrian Evans' proven framework for accessing the hidden job market. You rate yourself across 14 statements covering five stages of a successful executive career transition. Each score is weighted by importance and compiled into a total out of 200 — giving you an honest, objective picture of where you stand and where to focus first.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How long does it take to complete?<div class="faq-icon">+</div></div>
+        <div class="faq-a">The diagnostic takes approximately 4 minutes to complete. There are 14 self-rating statements across 5 stages. You slide a bar from 0 (not at all true) to 10 (completely true) for each one. Your score, breakdown and key focus areas are shown immediately on screen when you finish.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Is it really free?<div class="faq-icon">+</div></div>
+        <div class="faq-a">Yes — the diagnostic is completely free with no strings attached. Adrian reviews every result personally and follows up directly. There is no obligation to engage in any paid advisory programme.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What happens after I submit my results?<div class="faq-icon">+</div></div>
+        <div class="faq-a">Once you complete the diagnostic and enter your details, your results are sent to your email address and Adrian is notified immediately. Adrian reviews your score and key focus areas and will typically follow up within 1–2 business days to discuss your results and whether advisory support would be useful.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Why do I need to use a personal email address?<div class="faq-icon">+</div></div>
+        <div class="faq-a">Corporate email servers often block automated emails from external senders, which means your results may not reach your inbox if you use a work address. We recommend using a personal email (Gmail, Hotmail, Yahoo or similar) to ensure your results are delivered reliably.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What is a good score out of 200?<div class="faq-icon">+</div></div>
+        <div class="faq-a">The scoring bands are: 0–80 (Not yet visible), 81–130 (Emerging access), 131–170 (Active access), and 171–200 (Hidden market insider). Most executives completing the diagnostic for the first time score in the 60–120 range — which is entirely normal. The value is not in the absolute score but in identifying the specific steps where you are weakest, as these represent the highest-leverage areas to address first.</div>
+      </div>
+
+      <div class="divider" style="margin-top:48px;"></div>
+      <p class="section-label" style="margin-top:32px;">About the Advisory Services</p>
+      <h2 class="section-heading" style="margin-bottom:32px;">Working with Adrian</h2>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Who are the advisory services designed for?<div class="faq-icon">+</div></div>
+        <div class="faq-a">The advisory programmes are designed for senior executives — typically at MD, VP, C-suite or board level — across payments, fintech and financial services. Adrian works with clients across the UK, Europe, US, Africa, LatAm, Singapore and Australia.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How is this different from working with a recruiter?<div class="faq-icon">+</div></div>
+        <div class="faq-a">Recruiters work for the hiring company — their job is to fill roles, not to optimise your career. Adrian works exclusively for you. Having spent a decade as a London headhunter, he brings the perspective of someone who has made hiring decisions and knows exactly what senior employers look for — and applies that to building a process that puts you in control of your own career transition.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How long does the advisory programme typically last?<div class="faq-icon">+</div></div>
+        <div class="faq-a">The flagship Executive Advantage Programme typically runs for 3–6 months, depending on where you are starting from and the complexity of your target. Focused engagements such as the Career Positioning Review or Offer Negotiation coaching can be completed in a shorter timeframe. All programmes are tailored to the individual.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Does the framework work in a difficult job market?<div class="faq-icon">+</div></div>
+        <div class="faq-a">Yes — the framework was specifically developed and stress-tested during the 2008–09 financial crisis, one of the most challenging hiring environments in a generation. Executives who followed the methodology consistently outperformed peers who were searching without a structured process, securing roles significantly faster even as the wider market contracted.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How do I get started?<div class="faq-icon">+</div></div>
+        <div class="faq-a">The best starting point is always the Executive Advantage Score diagnostic — it's free, takes 4 minutes, and gives Adrian the context he needs to have a meaningful first conversation. Complete the diagnostic and Adrian will follow up directly.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Still have questions?</h2>
+    <p>Take the diagnostic first — Adrian will follow up and can answer any questions directly on the call.</p>
+    <a href="diagnostic.html" class="btn btn-white">Take the Free Diagnostic &rarr;</a>
+  </div>
+
+</div>
+
+<!-- FOOTER (shown on all pages) -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span style="color:var(--white);font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;">The Executive Advantage</span>
+        <p>A career advisory framework for senior payments and fintech executives, built on Adrian Evans' proven 14-step methodology.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigate</h4>
+        <a onclick="showPage('benchmark')">Benchmark Your Career</a>
+        <a onclick="showPage('cases')">Case Studies</a>
+        <a onclick="showPage('services')">Growth Advisory Services</a>
+        <a onclick="showPage('faq')">FAQ</a>
+      </div>
+      <div class="footer-links">
+        <h4>Contact</h4>
+        <a>adrian@adrianevans.co.uk</a>
+        <a href="diagnostic.html">Take the Diagnostic</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 The Executive Advantage | Adrian Evans. All rights reserved.</p>
+      <p>Powered by Payments Leaders Advisory</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const navEl = document.getElementById('nav-' + id);
+  if(navEl) navEl.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function toggleMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+
+// Set initial active nav
+document.getElementById('nav-benchmark').classList.add('active');
+
+// Handle hash routing
+const hash = window.location.hash.replace('#','');
+if(['benchmark','cases','services','faq'].includes(hash)) showPage(hash);
+</script>
+</body>
+</html>
