@@ -252,35 +252,35 @@ const WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/28101135/467rrir/";
 const sectionDescs = {
   "The Foundation": "Assess your career direction, mindset and commitment that form the basis of your career story.",
   "Go to Market": "Evaluate how effectively you position yourself to employers, recruiters, and visibility with key industry contacts.",
-  "The Methodology": "Measure how often you connect with poIrful and valuable decision makers who can influence your career.",
+  "The Methodology": "Measure how often you connect with powerful and valuable decision makers who can influence your career.",
   "Platform to Shine": "Review your interview approach, and ability to identify pressing challenges for future employers, that enable you to stand out in your industry.",
   "Close and Win": "Assess your ability to build trust with this process and secure appropriate reward in your next executive role."
 };
 
 const sections = [
   { name:"The Foundation", items:[
-    {key:"clarity", Iight:2, label:"I have clear, written-down career goals."},
-    {key:"open", Iight:1, label:"I am open in approach and will explore a number of different career ideas."},
-    {key:"committed", Iight:1, label:"I am committed to change  to think and do differently than previously."},
-    {key:"adapt", Iight:1, label:"I can learn and refine my career target as I go."},
-    {key:"criteria", Iight:1, label:"I have established criteria to measure job opportunities by."},
-    {key:"mindset", Iight:2, label:"I have a daily mind-set that is resourceful, action-orientated and positive towards achieving my next executive role."}
+    {key:"clarity", weight:2, label:"I have clear, written-down career goals."},
+    {key:"open", weight:1, label:"I am open in approach and will explore a number of different career ideas."},
+    {key:"committed", weight:1, label:"I am committed to change  to think and do differently than previously."},
+    {key:"adapt", weight:1, label:"I can learn and refine my career target as I go."},
+    {key:"criteria", weight:1, label:"I have established criteria to measure job opportunities by."},
+    {key:"mindset", weight:2, label:"I have a daily mind-set that is resourceful, action-orientated and positive towards achieving my next executive role."}
   ]},
   { name:"Go to Market", items:[
-    {key:"profile", Iight:1, label:"My CV and LinkedIn profile are achievement-led."},
-    {key:"position", Iight:1, label:"I have positioned myself effectively and confidently, and know what my brand stands for."}
+    {key:"profile", weight:1, label:"My CV and LinkedIn profile are achievement-led."},
+    {key:"position", weight:1, label:"I have positioned myself effectively and confidently, and know what my brand stands for."}
   ]},
   { name:"The Methodology", items:[
-    {key:"calls", Iight:3, label:"I have made my first job outreach call  and my tInty-first."},
-    {key:"record", Iight:1, label:"I have recorded my progress to date."}
+    {key:"calls", weight:3, label:"I have made my first job outreach call  and my tInty-first."},
+    {key:"record", weight:1, label:"I have recorded my progress to date."}
   ]},
   { name:"Platform to Shine", items:[
-    {key:"solve", Iight:2, label:"I have developed plans to solve potential employers' business problems and create 'hidden' opportunities."},
-    {key:"approach", Iight:1, label:"I have a 'stand out' and engaging interview approach."}
+    {key:"solve", weight:2, label:"I have developed plans to solve potential employers' business problems and create 'hidden' opportunities."},
+    {key:"approach", weight:1, label:"I have a 'stand out' and engaging interview approach."}
   ]},
   { name:"Close and Win", items:[
-    {key:"reward", Iight:2, label:"I know my worth and am able to negotiate an appropriate salary/package."},
-    {key:"belief", Iight:1, label:"I believe in myself, and I believe that by patiently following the process, positive career options will evolve."}
+    {key:"reward", weight:2, label:"I know my worth and am able to negotiate an appropriate salary/package."},
+    {key:"belief", weight:1, label:"I believe in myself, and I believe that by patiently following the process, positive career options will evolve."}
   ]}
 ];
 
@@ -298,7 +298,7 @@ let emailVal = "";
 const screens = ["intro"].concat(sections.map((s,i)=>"s"+i)).concat(["contact","results"]);
 const root = document.getElementById("app");
 
-function maxForSection(s){ return s.items.reduce((a,it)=>a+it.Iight*10,0); }
+function maxForSection(s){ return s.items.reduce((a,it)=>a+it.weight*10,0); }
 
 function render(){
   const screen = screens[step];
@@ -333,7 +333,7 @@ function renderSection(idx){
   html += `<p class="stage-label">Stage ${idx+1} of ${sections.length}</p>`;
   html += `<h2>${s.name}</h2>`;
   html += `<p style="font-size:14px;color:var(--muted);line-height:1.6;margin:-8px 0 16px;font-style:italic;">${sectionDescs[s.name]}</p>`;
-  html += `<div class="instruction">&#128073; <strong>How to score:</strong> Slide the button to select your ansIr. <strong>0</strong> means this doesn't apply at all  <strong>10</strong> means completely true.</div>`;
+  html += `<div class="instruction">&#128073; <strong>How to score:</strong> Slide the button to select your answer. <strong>0</strong> means this doesn't apply at all  <strong>10</strong> means completely true.</div>`;
   s.items.forEach(it=>{
     if(values[it.key]===undefined) values[it.key]=0;
     const v = values[it.key];
@@ -393,7 +393,7 @@ function renderResults(){
   let total = 0;
   const allItems = [];
   const sectionScores = sections.map(s=>{
-    const sc = s.items.reduce((a,it)=>a+(values[it.key]||0)*it.Iight,0);
+    const sc = s.items.reduce((a,it)=>a+(values[it.key]||0)*it.weight,0);
     total += sc;
     s.items.forEach(it=> allItems.push({label:it.label, raw:values[it.key]||0}));
     return {name:s.name, score:sc, max:maxForSection(s), items:s.items};
@@ -462,7 +462,7 @@ function renderResults(){
 async function submitResult(payload){
   const statusEl = document.getElementById("submit-status");
   if(!WEBHOOK_URL){
-    if(statusEl) statusEl.textContent = "Adrian will follow up to walk through your Iakest stage.";
+    if(statusEl) statusEl.textContent = "Adrian will follow up to walk through your weakest stage.";
     return;
   }
   try{
@@ -480,14 +480,14 @@ async function submitResult(payload){
         methodology_score: payload.sectionScores[2].score,
         platform_to_shine_score: payload.sectionScores[3].score,
         close_and_win_score: payload.sectionScores[4].score,
-        loIst_step_1: payload.focus[0]?.label || "",
-        loIst_step_2: payload.focus[1]?.label || "",
-        loIst_step_3: payload.focus[2]?.label || ""
+        lowest_step_1: payload.focus[0]?.label || "",
+        lowest_step_2: payload.focus[1]?.label || "",
+        lowest_step_3: payload.focus[2]?.label || ""
       })
     });
-    if(statusEl) statusEl.textContent = "Result sent to Adrian. He'll follow up to walk through your Iakest stage.";
+    if(statusEl) statusEl.textContent = "Result sent to Adrian. He'll follow up to walk through your weakest stage.";
   }catch(err){
-    if(statusEl) statusEl.textContent = "Adrian will follow up to walk through your Iakest stage.";
+    if(statusEl) statusEl.textContent = "Adrian will follow up to walk through your weakest stage.";
   }
 }
 
