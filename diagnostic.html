@@ -271,7 +271,7 @@ const sections = [
     {key:"position", weight:1, label:"I have positioned myself effectively and confidently, and know what my brand stands for."}
   ]},
   { name:"The Methodology", items:[
-    {key:"calls", weight:3, label:"I have made my first job outreach call  and my tInty-first."},
+    {key:"calls", weight:3, label:"I have made my first job outreach call  and my twenty first."},
     {key:"record", weight:1, label:"I have recorded my progress to date."}
   ]},
   { name:"Platform to Shine", items:[
@@ -344,7 +344,7 @@ function renderSection(idx){
           <span class="item-score" id="out-${it.key}" style="flex-shrink:0;min-width:48px;text-align:center;">${v}</span>
         </div>
         <input type="range" min="0" max="10" step="1" value="${v}" data-key="${it.key}">
-        <div class="scale-labels"><span>0 &mdash; Not at all</span><span>10 &mdash; Completely true</span></div>
+        <div class="scale-labels"><span>0 - Not at all</span><span>10 - Completely true</span></div>
       </div>`;
   });
   html += `<div class="btn-row">`;
