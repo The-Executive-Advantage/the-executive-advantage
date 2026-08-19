@@ -287,8 +287,8 @@ const sections = [
 const bands = [
   {min:0, max:80, label:"Not yet visible", desc:"Foundational gaps are limiting your access to the hidden market."},
   {min:81, max:130, label:"Emerging access", desc:"The foundations are there  execution is inconsistent."},
-  {min:131, max:170, label:"Active access", desc:"You're well positioned. Refine and amplify what's working."},
-  {min:171, max:200, label:"Hidden market insider", desc:"You're executing at a high level across all 14 steps."}
+  {min:131, max:170, label:"Active access", desc:"You are well positioned. Refine and amplify what is working."},
+  {min:171, max:200, label:"Hidden market insider", desc:"You are executing at a high level across all 14 steps."}
 ];
 
 let values = {};
@@ -317,7 +317,7 @@ function renderIntro(){
   root.innerHTML = `
     <p class="eyebrow">The Executive Advantage Score &middot; Adrian Evans</p>
     <h1>Measuring Your Progress to Secure Next Executive Position</h1>
-    <p>Executives don't struggle to secure their next role because of a lack of talent; they struggle because they lack a proven methodology.</p>
+    <p>Executives do not struggle to secure their next role because of a lack of talent; they struggle because they lack a proven methodology.</p>
       <p style="font-size:15px;line-height:1.7;color:var(--muted);margin:0 0 14px;">I have invested three decades supporting executives in their careers. The last 15 years operating exclusively as an advisor to senior executives. That proximity, the lessons learnt, and the relationships built, grounds the judgement and perspective I bring to every conversation.</p>
       <p style="font-size:15px;line-height:1.7;color:var(--muted);margin:0 0 14px;">I have developed this proven 14-step career framework to support senior leaders create opportunities rather than chase them. This has proved effective even in the most challenging job markets (2008/09) and hundreds of executives have utilised it to secure their next role, often generating multiple offers and greater career choice.</p>
       <p style="font-size:15px;line-height:1.7;color:var(--muted);margin:0 0 28px;">Rate yourself honestly across <strong>14 steps in 5 stages</strong>. Less than 4 minutes. You will receive a score out of 200 and a clarity of where to focus first.</p>
@@ -333,7 +333,7 @@ function renderSection(idx){
   html += `<p class="stage-label">Stage ${idx+1} of ${sections.length}</p>`;
   html += `<h2>${s.name}</h2>`;
   html += `<p style="font-size:14px;color:var(--muted);line-height:1.6;margin:-8px 0 16px;font-style:italic;">${sectionDescs[s.name]}</p>`;
-  html += `<div class="instruction">&#128073; <strong>How to score:</strong> Slide the button to select your answer. <strong>0</strong> means this doesn't apply at all  <strong>10</strong> means completely true.</div>`;
+  html += `<div class="instruction">&#128073; <strong>How to score:</strong> Slide the button to select your answer. <strong>0</strong> means this does not apply at all  <strong>10</strong> means completely true.</div>`;
   s.items.forEach(it=>{
     if(values[it.key]===undefined) values[it.key]=0;
     const v = values[it.key];
@@ -485,7 +485,7 @@ async function submitResult(payload){
         lowest_step_3: payload.focus[2]?.label || ""
       })
     });
-    if(statusEl) statusEl.textContent = "Result sent to Adrian. He'll follow up to walk through your weakest stage.";
+    if(statusEl) statusEl.textContent = "Result sent to Adrian. He will follow up to walk through your weakest stage.";
   }catch(err){
     if(statusEl) statusEl.textContent = "Adrian will follow up to walk through your weakest stage.";
   }
