@@ -482,7 +482,7 @@ function renderResults(){
             <div style="width:60px;height:6px;border-radius:3px;background:var(--border);overflow:hidden;">
               <div style="height:100%;width:${(it.raw/10)*100}%;background:var(--orange);"></div>
             </div>
-            <span style="font-size:13px;font-weight:700;color:var(--ink);min-width:38px;text-align:right;">${it.raw} / 10</span>
+            <span style="font-size:13px;font-weight:700;color:var(--ink);min-width:48px;text-align:right;white-space:nowrap;">${it.raw} / 10</span>
           </div>
         </div>`;
     });
@@ -745,7 +745,7 @@ function buildResultsEmailHTML(payload){
                   <td width="${100-itPct}%" style="background:#e5e2f5;font-size:1px;line-height:6px;">&nbsp;</td>
                 </tr></table>
               </td>
-              <td style="${font}font-size:13px;font-weight:700;color:${ink};">${it.raw} / 10</td>
+              <td style="${font}font-size:13px;font-weight:700;color:${ink};white-space:nowrap;min-width:44px;text-align:right;">${it.raw} / 10</td>
             </tr></table>
           </td>
         </tr></table>
